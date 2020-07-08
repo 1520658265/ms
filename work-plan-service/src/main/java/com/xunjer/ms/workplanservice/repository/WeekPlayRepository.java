@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface WeekPlayRepository extends JpaRepository<WeekPlan,Integer> , JpaSpecificationExecutor {
-    Integer deleteByWeekId(int[] ids);
+    void deleteByWeekIdIn(int[] ids);
 }

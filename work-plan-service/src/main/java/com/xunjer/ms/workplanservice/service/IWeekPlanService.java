@@ -3,10 +3,11 @@ package com.xunjer.ms.workplanservice.service;
 import com.xunjer.linsencommon.model.PageData;
 import com.xunjer.linsencommon.model.ResultModel;
 import com.xunjer.ms.workplanservice.entity.WeekPlan;
+import com.xunjer.ms.workplanservice.entity.dto.WeekPlanDTO;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 /**
@@ -23,5 +24,7 @@ public interface IWeekPlanService {
 
     ResultModel<Boolean> delete(String weekIds);
 
-    ResultModel<Page<List<WeekPlan>>> findByCoditon(WeekPlan weekPlan, Pageable pageable);
+    ResultModel<Page<WeekPlan>> findByCondition(WeekPlan weekPlan, Pageable pageable);
+
+    ResultModel<PageData<List<WeekPlanDTO>>> findWeekPlanByCondition(WeekPlan weekPlan, Pageable pageable);
 }

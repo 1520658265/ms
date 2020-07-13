@@ -3,9 +3,11 @@ package com.xunjer.ms.workplanservice.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yuansheng
@@ -40,4 +42,8 @@ public class WeekPlan {
     private Integer weekScore;
 
     private Integer weekState;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "week_id")
+//    private List<DayPlan> list;
 }

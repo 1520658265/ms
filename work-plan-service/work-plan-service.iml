@@ -180,6 +180,5 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:5.2.7.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.xmlunit:xmlunit-core:2.6.4" level="project" />
     <orderEntry type="module" module-name="linsen-common" />
-    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.3.8" level="project" />
   </component>
 </module>

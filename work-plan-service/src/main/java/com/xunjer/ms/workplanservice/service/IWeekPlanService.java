@@ -24,7 +24,8 @@ public interface IWeekPlanService {
 
     ResultModel<Boolean> delete(String weekIds);
 
-    ResultModel<Page<WeekPlan>> findByCondition(WeekPlan weekPlan, Pageable pageable);
+    ResultModel<PageData<List<WeekPlan>>> findByCondition(WeekPlan weekPlan, Pageable pageable);
 
     ResultModel<PageData<List<WeekPlanDTO>>> findWeekPlanByCondition(WeekPlan weekPlan, Pageable pageable);
+
 }

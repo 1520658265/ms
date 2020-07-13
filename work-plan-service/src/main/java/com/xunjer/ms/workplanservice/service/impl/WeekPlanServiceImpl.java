@@ -6,6 +6,7 @@ import com.xunjer.linsencommon.model.PageData;
 import com.xunjer.linsencommon.model.ResultModel;
 import com.xunjer.linsencommon.utils.StringArrayTransformUtil;
 import com.xunjer.linsencommon.utils.StringSpiltUtil;
+import com.xunjer.ms.workplanservice.common.utils.PageTrans;
 import com.xunjer.ms.workplanservice.entity.WeekPlan;
 import com.xunjer.ms.workplanservice.entity.dto.WeekPlanDTO;
 import com.xunjer.ms.workplanservice.repository.DayPlanRepository;
@@ -65,14 +66,14 @@ public class WeekPlanServiceImpl implements IWeekPlanService {
     }
 
     @Override
-    public ResultModel<Page<WeekPlan>> findByCondition(WeekPlan weekPlan, Pageable pageable) {
+    public ResultModel<PageData<List<WeekPlan>>> findByCondition(WeekPlan weekPlan, Pageable pageable) {
 
         Specification<WeekPlan> specification =  Specifications.<WeekPlan> and()
-                .like("weekTitle",  weekPlan.getWeekTitle()+"%")
+                .like(StringUtils.isNotEmpty(weekPlan.getWeekTitle()),"weekTitle",  weekPlan.getWeekTitle()+"%")
                 .between(StringUtils.isNotEmpty(DateUtil.formatDateTime(weekPlan.getWeekStart())),"weekCreateDate",weekPlan.getWeekStart(),weekPlan.getWeekEnd())
                 .build();
         Page<WeekPlan> page = weekPlayRepository.findAll(specification, PageRequest.of(0, 15,Sort.by(Sort.DEFAULT_DIRECTION,"weekCreateDate")));
-        return new ResultModel<>(page);
+        return new ResultModel<>(PageTrans.trans(page));
     }
 
     @Override

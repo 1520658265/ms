@@ -28,7 +28,7 @@ public class WorkController {
     private IWeekPlanService weekPlanService;
 
     @GetMapping("/get")
-    public ResultModel<Page<WeekPlan>> getList(WeekPlan weekPlan, Pageable pageable){
+    public ResultModel<PageData<List<WeekPlan>>> getList(WeekPlan weekPlan, Pageable pageable){
         return weekPlanService.findByCondition(weekPlan,pageable);
     }
 

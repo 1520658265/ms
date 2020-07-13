@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-service/auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/linsen-auth-service/linsen-auth-service.iml" filepath="$PROJECT_DIR$/linsen-auth-service/linsen-auth-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/linsen-common/linsen-common.iml" filepath="$PROJECT_DIR$/linsen-common/linsen-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/linsen-nacos-config/linsen-nacos-config.iml" filepath="$PROJECT_DIR$/linsen-nacos-config/linsen-nacos-config.iml" />
       <module fileurl="file://$PROJECT_DIR$/ms.iml" filepath="$PROJECT_DIR$/ms.iml" />

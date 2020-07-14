@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="linsen-gateway" />
         <module name="linsen-auth-service" />
         <module name="ms" />
         <module name="linsen-common" />
@@ -18,6 +19,7 @@
       <module name="auth-service" target="1.8" />
       <module name="linsen-auth-service" target="1.8" />
       <module name="linsen-common" target="1.8" />
+      <module name="linsen-gateway" target="1.8" />
       <module name="linsen-nacos-config" target="1.8" />
       <module name="ms" target="1.8" />
       <module name="work-plan-service" target="1.8" />
@@ -28,6 +30,7 @@
       <module name="auth-service" options="-parameters" />
       <module name="linsen-auth-service" options="-parameters" />
       <module name="linsen-common" options="-parameters" />
+      <module name="linsen-gateway" options="-parameters" />
       <module name="linsen-nacos-config" options="-parameters" />
       <module name="ms" options="-parameters" />
       <module name="work-plan-service" options="-parameters" />

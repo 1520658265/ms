@@ -33,6 +33,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
         String path = exchange.getRequest().getURI().getPath();
         InetSocketAddress ip = exchange.getRequest().getRemoteAddress();
         String ipAddress = exchange.getRequest().getHeaders().getFirst("x-forwarded-for");
+        //这里内网调用直接pass  不做拦截
         if(!checkFilter(path)){
             if (token == null || token.isEmpty()) {
                 exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

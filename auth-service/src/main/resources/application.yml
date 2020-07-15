@@ -1,9 +1,9 @@
 server:
-  port: 8111
+  port: 8114
 
 spring:
   application:
-    name: work-plan-service
+    name: auth-service
   cloud:
     nacos:
       discovery:

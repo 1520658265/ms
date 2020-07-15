@@ -1,5 +1,8 @@
 package com.xunjer.authservice.service;
 
+import com.xunjer.authservice.entity.dto.UserInfoDTO;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
@@ -10,5 +13,5 @@ import java.util.Objects;
  */
 public interface IUserInfoService {
 
-    Object login(String userName,String passsword);
+    UserInfoDTO login(String userName, String passsword) throws Exception;
 }

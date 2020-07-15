@@ -9,4 +9,8 @@ package com.xunjer.linsencommon.dictionary;
 public interface CommonKey {
 
     String token = "aliToken";
+
+    String pubKey = "publicKey";
+
+    String priKey = "privateKey";
 }

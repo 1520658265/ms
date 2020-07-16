@@ -1,6 +1,7 @@
 package com.xunjer.authservice.controller;
 
-import cn.hutool.system.UserInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xunjer.authservice.entity.UserInfo;
 import com.xunjer.authservice.entity.dto.UserInfoDTO;
 import com.xunjer.authservice.service.IUserInfoService;
 import com.xunjer.authservice.utils.JwtTokenUtil;
@@ -28,17 +29,11 @@ public class UserController {
     @Autowired
     private IUserInfoService userInfoService;
 
-    @GetMapping("pubKey")
-    public PublicKey pubKey() throws NoSuchAlgorithmException {
-        JwtTokenUtil.createJWT();
-        return JwtTokenUtil.Public_Key;
+    @GetMapping("tokenCheck")
+    public UserInfo tokenCheck(String token) throws Exception {
+        return JwtTokenUtil.tokenCheck(token,new ObjectMapper());
     }
 
-    @GetMapping("priKey")
-    public PrivateKey priKey() throws NoSuchAlgorithmException {
-        JwtTokenUtil.createJWT();
-        return JwtTokenUtil.Private_key;
-    }
 
     @PostMapping("login")
     public ResultModel<UserInfoDTO> login(String userName, String password) throws Exception {

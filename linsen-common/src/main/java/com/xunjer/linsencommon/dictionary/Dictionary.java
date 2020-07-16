@@ -14,6 +14,7 @@ public class Dictionary {
         Unknown(1000),
         UnAuth(6000),
         UnLogin(2000),
+        TokenValid(3000),
         NotFound(4000);
 
         private int key;

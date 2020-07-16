@@ -10,6 +10,7 @@ import com.xunjer.authservice.utils.JwtTokenUtil;
 import com.xunjer.linsencommon.utils.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +26,13 @@ import java.util.Map;
 @Service
 public class UserInfoServiceImpl implements IUserInfoService {
 
+    @Value("${publicKey}")
+    private String publicKey;
+
+    @Value("${privateKey}")
+    private String privateKey;
+
+
     @Autowired
     UserInfoRepository userInfoRepository;
 
@@ -34,9 +42,8 @@ public class UserInfoServiceImpl implements IUserInfoService {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         BeanUtil.copyProperties(userInfo,userInfoDTO,true);
         if(userInfo.getPassword().equals(password)){
-            JwtTokenUtil.createJWT();
-            Map<String,Object> calims = new HashMap<>();
-            calims.put("userName",userInfoDTO.getUserName());
+            JwtTokenUtil.createJWT(publicKey,privateKey);
+            Map<String,Object> calims = BeanUtil.beanToMap(userInfo);
             userInfoDTO.setToken(JwtUtils.createUserToken(calims,JwtTokenUtil.Private_key,200000));
             return userInfoDTO;
         }

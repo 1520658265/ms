@@ -1,8 +1,12 @@
 package com.xunjer.linsencommon.utils;
 
+import cn.hutool.core.io.FileUtil;
 import com.xunjer.linsencommon.dictionary.CommonKey;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -16,6 +20,7 @@ import java.util.Map;
  * @Description: JWT
  * @date 2020/7/148:42
  */
+@Slf4j
 public class JwtUtils {
 
     /**
@@ -77,41 +82,56 @@ public class JwtUtils {
      * @return
      */
     public static Claims parserUserToken(String userToken, PublicKey publicKey) {
-
-        // 通过公钥解析Token
-        Jws<Claims> claimsJws = Jwts.parser()
-                .setSigningKey(publicKey)
-                .parseClaimsJws(userToken);
-        // 获取携带内容体
-        Claims body = claimsJws.getBody();
-        return body;
+        try {
+            // 通过公钥解析Token
+            Jws<Claims> claimsJws = Jwts.parser()
+                    .setSigningKey(publicKey)
+                    .parseClaimsJws(userToken);
+            // 获取携带内容体
+            Claims body = claimsJws.getBody();
+            return body;
+        }catch (Exception e){
+            log.error("token无效"+userToken);
+            return null;
+        }
     }
 
 
     /**
      * 得到公钥
-     * @param pubKey
+     * @param pubKeyFilePath
      * @return
      * @throws Exception
      */
-    public static PublicKey getPublicKey(String pubKey) throws Exception {
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(pubKey.getBytes());
+    public static PublicKey getPublicKey(String pubKeyFilePath) throws Exception {
+        File file = new File(pubKeyFilePath);
+        byte[] bytes = FileUtil.readBytes(file);
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePublic(spec);
     }
 
     /**
      * 得到私钥
-     * @param pubKey
+     * @param priKeyFilePath
      * @return
      * @throws Exception
      */
-    public static PrivateKey getPrivateKey(String pubKey) throws Exception {
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(pubKey.getBytes());
+    public static PrivateKey getPrivateKey(String priKeyFilePath) throws Exception {
+        File file = new File(priKeyFilePath);
+        byte[] bytes = FileUtil.readBytes(file);
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePrivate(spec);
     }
 
 
+    public static void savePublicKey(PublicKey publicKey, String filePath) throws IOException {
+        FileSaveUtils.byteArraySaveToFile(publicKey.getEncoded(),filePath);
+    }
+
+    public static void savePrivateKey(PrivateKey privateKey, String filePath) throws IOException {
+        FileSaveUtils.byteArraySaveToFile(privateKey.getEncoded(),filePath);
+    }
 
 }

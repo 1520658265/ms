@@ -14,7 +14,10 @@ import io.jsonwebtoken.Claims;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -30,6 +33,7 @@ import java.util.UUID;
  */
 public class JwtTokenUtil {
 
+
     public static PublicKey Public_Key ;
 
     public static PrivateKey Private_key;
@@ -41,32 +45,27 @@ public class JwtTokenUtil {
     @Autowired
     private static UserInfoRepository userInfoRepository;
 
-//    static {
-//        userInfoRepository = SpringUtil.getBean(UserInfoRepository.class);
-//    }
-
-    public static void createJWT() throws NoSuchAlgorithmException {
+    public static void createJWT(String publicKeyPath, String privateKeyPath) throws NoSuchAlgorithmException, IOException {
         if(Public_Key!=null || System.currentTimeMillis()>Time){
             String salt = UUID.randomUUID().toString();
             Map<String,Object> key = JwtUtils.createKey(salt);
             Public_Key = (PublicKey) key.get(CommonKey.pubKey);
             Private_key = (PrivateKey)key.get(CommonKey.priKey);
+            JwtUtils.savePrivateKey(Private_key, privateKeyPath) ;
+            JwtUtils.savePublicKey(Public_Key,publicKeyPath);
             Time = System.currentTimeMillis() + moreTime;
         }
     }
 
-    public static Boolean tokenCheck(String token, ObjectMapper objectMapper) throws Exception {
+    public static UserInfo tokenCheck(String token, ObjectMapper objectMapper) throws Exception {
         if(StringUtils.isEmpty(token)){
-            return false;
+            return null;
         }else{
             Claims claims = JwtUtils.parserUserToken(token, Public_Key);
-            String usrName= (String)claims.get("userId");
-            userInfoRepository.findByUserName(usrName);
-            if(userInfoRepository != null){
-                return true;
-            }else{
-                return false;
-            }
+            UserInfo userInfo = BeanUtil.fillBeanWithMap(claims,new UserInfo(),true);
+            return userInfoRepository.findById(userInfo.getUserId()).orElse(userInfo);
         }
     }
+
+
 }

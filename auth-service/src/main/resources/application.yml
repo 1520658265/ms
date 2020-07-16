@@ -29,3 +29,7 @@ spring:
           #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 
+publicKey: D:\\public_key.txt
+privateKey: D:\\private_key.txt
+
+

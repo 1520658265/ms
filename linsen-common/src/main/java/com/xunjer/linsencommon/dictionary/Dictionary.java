@@ -47,4 +47,18 @@ public class Dictionary {
             return this.key;
         }
     }
+
+    public static enum DeleteFlag{
+        Delete(1),
+        NotDelete(0);
+        private int key;
+
+        private DeleteFlag(final int key){
+            this.key = key;
+        }
+
+        public int key(){
+            return this.key;
+        }
+    }
 }

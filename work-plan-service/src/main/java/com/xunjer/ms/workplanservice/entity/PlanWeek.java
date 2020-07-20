@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table
 @Entity
-public class WeekPlan {
+public class PlanWeek {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer weekId;
@@ -42,8 +42,4 @@ public class WeekPlan {
     private Integer weekScore;
 
     private Integer weekState;
-
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "week_id")
-//    private List<DayPlan> list;
 }

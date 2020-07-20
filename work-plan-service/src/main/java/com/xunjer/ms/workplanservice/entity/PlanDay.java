@@ -18,7 +18,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Table
 @Entity
-public class DayPlan {
+public class PlanDay {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

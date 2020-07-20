@@ -1,8 +1,7 @@
 package com.xunjer.ms.workplanservice.service;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.xunjer.linsencommon.model.ResultModel;
-import com.xunjer.ms.workplanservice.entity.DayPlan;
+import com.xunjer.ms.workplanservice.entity.PlanDay;
 
 import java.util.List;
 
@@ -14,12 +13,12 @@ import java.util.List;
  */
 public interface IDayPlanService {
 
-    ResultModel<Boolean> addBatch(List<DayPlan>list);
+    ResultModel<Boolean> addBatch(List<PlanDay>list);
 
-    ResultModel<Boolean> addOne(DayPlan dayPlan);
+    ResultModel<Boolean> addOne(PlanDay planDay);
 
     ResultModel<Boolean> deleteBatch(int[] dayIds);
 
-    ResultModel<Boolean> update(DayPlan dayPlan);
+    ResultModel<Boolean> update(PlanDay planDay);
 
 }

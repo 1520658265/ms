@@ -2,11 +2,9 @@ package com.xunjer.ms.workplanservice.service;
 
 import com.xunjer.linsencommon.model.PageData;
 import com.xunjer.linsencommon.model.ResultModel;
-import com.xunjer.ms.workplanservice.entity.WeekPlan;
-import com.xunjer.ms.workplanservice.entity.dto.WeekPlanDTO;
-import org.springframework.data.domain.Page;
+import com.xunjer.ms.workplanservice.entity.PlanWeek;
+import com.xunjer.ms.workplanservice.entity.dto.PlanWeekDTO;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,14 +16,12 @@ import java.util.List;
  */
 public interface IWeekPlanService {
 
-    ResultModel<WeekPlan> add(WeekPlan weekPlan);
+    ResultModel<Boolean> add(PlanWeek planWeek);
 
-    ResultModel<WeekPlan> update(WeekPlan weekPlan);
+    ResultModel<Boolean> update(PlanWeek planWeek);
 
     ResultModel<Boolean> delete(String weekIds);
 
-    ResultModel<PageData<List<WeekPlan>>> findByCondition(WeekPlan weekPlan, Pageable pageable);
-
-    ResultModel<PageData<List<WeekPlanDTO>>> findWeekPlanByCondition(WeekPlan weekPlan, Pageable pageable);
+    ResultModel<PageData<List<PlanWeekDTO>>> findWeekPlanByCondition(PlanWeek planWeek, Pageable pageable);
 
 }

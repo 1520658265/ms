@@ -1,7 +1,7 @@
 package com.xunjer.ms.workplanservice.service.impl;
 
 import com.xunjer.linsencommon.model.ResultModel;
-import com.xunjer.ms.workplanservice.entity.DayPlan;
+import com.xunjer.ms.workplanservice.entity.PlanDay;
 import com.xunjer.ms.workplanservice.repository.DayPlanRepository;
 import com.xunjer.ms.workplanservice.service.IDayPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +24,14 @@ public class DayPlanServiceImpl implements IDayPlanService {
     private DayPlanRepository dayPlanRepository;
 
     @Override
-    public ResultModel<Boolean> addBatch(List<DayPlan> list) {
-        List<DayPlan> save = dayPlanRepository.saveAll(list);
+    public ResultModel<Boolean> addBatch(List<PlanDay> list) {
+        List<PlanDay> save = dayPlanRepository.saveAll(list);
         return new ResultModel<>(Boolean.TRUE);
     }
 
     @Override
-    public ResultModel<Boolean> addOne(DayPlan dayPlan) {
-        dayPlanRepository.save(dayPlan);
+    public ResultModel<Boolean> addOne(PlanDay planDay) {
+        dayPlanRepository.save(planDay);
         return new ResultModel<>(Boolean.TRUE);
     }
 
@@ -42,8 +42,8 @@ public class DayPlanServiceImpl implements IDayPlanService {
     }
 
     @Override
-    public ResultModel<Boolean> update(DayPlan dayPlan) {
-        dayPlanRepository.save(dayPlan);
+    public ResultModel<Boolean> update(PlanDay planDay) {
+        dayPlanRepository.save(planDay);
         return new ResultModel<>(Boolean.TRUE);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author yuansheng
@@ -27,5 +28,11 @@ public class UserInfo {
 
     private String password;
 
-    private String avatar;
+    private String nickName;
+
+    private Integer flagDel;
+
+    private Date createDate;
+
+    private String userDesc;
 }

@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/linsen-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/linsen-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/linsen-nacos-config/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/linsen-shares/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/linsen-shares/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/work-plan-service/src/main/java" charset="UTF-8" />
   </component>
 </project>

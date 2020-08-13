@@ -34,13 +34,7 @@ import java.util.Arrays;
  */
 public class TokenFilter implements GlobalFilter, Ordered {
 
-    private static final String[] userLogin = {"/user/login","/user/tokenCheck"};
-
-    @Value("${publicKey}")
-    private String pulicKeyPath;
-
-    private static PublicKey publicKey;
-
+    private static final String[] userLogin = {"/user/login","/user/tokenCheck","/linsen-shares/demo/getPublicKey"};
 
     /**
      * 要求把token放置请求头里面
@@ -57,27 +51,16 @@ public class TokenFilter implements GlobalFilter, Ordered {
         //这里内网调用直接pass  不做拦截
         if(!checkFilter(path)){
             if (token == null || token.isEmpty()) {
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                return exchange.getResponse().setComplete();
-            }else{
-                if(publicKey == null){
-                    try{
-                        publicKey = JwtUtils.getPublicKey(pulicKeyPath);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                Claims claims = JwtUtils.parserUserToken(token, publicKey);
-                UserInfo userInfo = BeanUtil.fillBeanWithMap(claims, new UserInfo(), true);
-                if(claims==null || userInfo == null || userInfo.getUserId()==null){
-                    ServerHttpResponse response = exchange.getResponse();
-                    response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                    //指定编码，否则在浏览器中会中文乱码
-                    //TODO 这里需要重写Response
-                    response.getHeaders().add("Content-Type", "text/plain;charset=UTF-8");
-//                    DataBuffer buffer = response.bufferFactory().wrap(JSONObject.toJSONString(CommonUtils.tokenValid()).getBytes(StandardCharsets.UTF_8));
-                    return response.setComplete();
-                }
+                ServerHttpResponse response = exchange.getResponse();
+                JSONObject message = new JSONObject();
+                message.put("status", -11);
+                message.put("data", "非法访问");
+                byte[] bits = message.toJSONString().getBytes(StandardCharsets.UTF_8);
+                DataBuffer buffer = response.bufferFactory().wrap(bits);
+                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                //指定编码，否则在浏览器中会中文乱码
+                response.getHeaders().add("Content-Type", "text/plain;charset=UTF-8");
+                return response.writeWith(Mono.just(buffer));
             }
         }
         return chain.filter(exchange);

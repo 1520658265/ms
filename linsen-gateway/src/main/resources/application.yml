@@ -7,6 +7,8 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+      password: nacos
+      username: nacos
     gateway:
       discovery:
         locator:
@@ -21,6 +23,11 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/user/**
+        - id: gateway-shares
+          uri: lb://linsen-shares
+          predicates:
+            - Path=/shares/**
 
 
 publicKey: D:\\public_key.txt
+

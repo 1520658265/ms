@@ -1,5 +1,3 @@
-#server:
-#  port: 8112
 #
 #spring:
 #  datasource:
@@ -33,3 +31,6 @@
 #          starttls:
 #            enable: true
 #            required: true
+#
+#privateKey: 我是嘶哑
+#publicKey: 我是公钥

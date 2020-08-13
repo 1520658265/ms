@@ -73,6 +73,7 @@ public class TokenFilter implements GlobalFilter, Ordered {
 
 
     public boolean checkFilter(String path){
-        return Arrays.asList(userLogin).stream().filter(s -> s.equalsIgnoreCase(path)).count()>0;
+        return true;
+//        return Arrays.asList(userLogin).stream().filter(s -> s.equalsIgnoreCase(path) || path.indexOf("demo")>-1).count()>0;
     }
 }

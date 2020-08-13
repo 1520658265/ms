@@ -66,7 +66,7 @@ public class SharesScheduleTask {
             shares.setSharesName(l[2]);
             shares.setNewPrice(l[3]);
             shares.setScopeQuota(l[5]);
-            shares.setScopeRate(l[4]);
+            shares.setScopeRate(l[5]);
             shares.setTurnover(l[6]);
             shares.setTurnoverQuota(l[7]);
             shares.setAmplitude(l[8]);

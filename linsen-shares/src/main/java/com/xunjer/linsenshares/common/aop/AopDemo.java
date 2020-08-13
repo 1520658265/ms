@@ -22,12 +22,12 @@ import java.lang.reflect.Method;
 @Slf4j
 public class AopDemo {
 
-    @Pointcut("execution(* com.xunjer.cn.linsen.controller..*.*(..))")
-    public void demoController(){
+//    @Pointcut("execution(* com.xunjer.cn.linsen.controller..*.*(..))")
+//    public void demoController(){
+//
+//    }
 
-    }
-
-    @Pointcut("@annotation(com.xunjer.cn.linsen.common.annotation.LogDemo)")
+    @Pointcut("@annotation(com.xunjer.linsenshares.common.annotation.LogDemo)")
     public void ann(){
 
     }
@@ -37,7 +37,7 @@ public class AopDemo {
 //        log.info("1111");
 //    }
 
-    @Around("demoController()")
+    @Around("ann()")
     public Object demo(final ProceedingJoinPoint point){
         long start = System.currentTimeMillis();
         //可以获得正在执行的方法+方法的参数

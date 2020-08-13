@@ -1,7 +1,7 @@
 package com.xunjer.linsenshares.common.sms;
 
 import cn.hutool.core.date.DateUtil;
-import com.xunjer.cn.linsen.common.sms.utils.HttpUtils;
+import com.xunjer.linsencommon.utils.HttpUtils;
 import org.apache.http.HttpResponse;
 
 import java.util.Date;

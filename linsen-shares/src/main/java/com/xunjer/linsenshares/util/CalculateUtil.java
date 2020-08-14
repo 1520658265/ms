@@ -1,7 +1,9 @@
 package com.xunjer.linsenshares.util;
 
+import java.text.DecimalFormat;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author yuansheng
@@ -54,5 +56,16 @@ public class CalculateUtil {
      */
     public static DoubleSummaryStatistics calculateList(List<? extends Number> list){
         return list.stream().mapToDouble(s->Double.parseDouble(s.toString())).summaryStatistics();
+    }
+
+    public static float floatBetween(float min, float max) throws Exception {
+        DecimalFormat df = new DecimalFormat("#.00");
+        if (max < min) {
+            throw new Exception("min < max");
+        }
+        if (min == max) {
+            return min;
+        }
+        return  Float.parseFloat(df.format(min + ((max - min) * new Random().nextDouble())));
     }
 }

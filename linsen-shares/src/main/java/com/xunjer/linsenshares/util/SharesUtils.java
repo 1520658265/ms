@@ -1,5 +1,6 @@
 package com.xunjer.linsenshares.util;
 
+import com.xunjer.linsenshares.common.constant.SharesConstant;
 import com.xunjer.linsenshares.entity.Shares;
 import com.xunjer.linsenshares.entity.dto.SharesDealDto;
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author yuansheng
@@ -44,5 +46,11 @@ public class SharesUtils {
             System.out.println("相同数据："+same.size());
             return same;
         }
+    }
+
+    public static List<Shares> filterLMR(float minLmr, List<Shares> shares){
+        minLmr = minLmr< SharesConstant.minLmr ? SharesConstant.minLmr : minLmr;
+        float finalMinLmr = minLmr;
+        return shares.stream().filter(shares1 -> checkString(shares1.getLmr()) && Float.parseFloat(shares1.getLmr())> finalMinLmr).collect(Collectors.toList());
     }
 }

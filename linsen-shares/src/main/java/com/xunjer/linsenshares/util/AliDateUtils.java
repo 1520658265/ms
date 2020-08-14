@@ -2,7 +2,7 @@ package com.xunjer.linsenshares.util;
 
 /**
  * @author yuansheng
- * @Title: 自定义事件工具类
+ * @Title: 自定义时间工具类
  * @Description:
  * @date 2020/8/1217:02
  */

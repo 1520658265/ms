@@ -13,4 +13,6 @@ public interface CommonKey {
     String pubKey = "publicKey";
 
     String priKey = "privateKey";
+
+    String endTime = "15:30:00";
 }

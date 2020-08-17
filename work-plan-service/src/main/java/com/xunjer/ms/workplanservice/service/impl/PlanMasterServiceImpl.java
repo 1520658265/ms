@@ -6,7 +6,7 @@ import com.xunjer.linsencommon.dictionary.Dictionary;
 import com.xunjer.linsencommon.model.PageData;
 import com.xunjer.linsencommon.model.ResultModel;
 import com.xunjer.linsencommon.utils.StringArrayTransformUtil;
-import com.xunjer.linsencommon.utils.StringSpiltUtil;
+import com.xunjer.linsencommon.utils.StringSplitUtils;
 import com.xunjer.ms.workplanservice.entity.PlanMaster;
 import com.xunjer.ms.workplanservice.entity.dto.PlanMasterDTO;
 import com.xunjer.ms.workplanservice.repository.PlanDayRepository;
@@ -56,7 +56,7 @@ public class PlanMasterServiceImpl implements IPlanMasterService {
 
     @Override
     public ResultModel<Boolean> delete(String weekIds) {
-        int[] ids = StringArrayTransformUtil.transformIntArray(StringSpiltUtil.spiltByComma(weekIds));
+        int[] ids = StringArrayTransformUtil.transformIntArray(StringSplitUtils.splitByComma(weekIds));
         playMasterRepository.batchLogicDelete(Dictionary.DeleteFlag.Delete.key(),ids);
         return new ResultModel<>(true);
     }

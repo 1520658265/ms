@@ -111,14 +111,4 @@ public class DemoController {
         return strBuilder.toString();
     }
 
-    @GetMapping("getCur")
-    public Object getCurData(String sharesCode) throws ParseException {
-        Map<String ,String> param  = new HashMap<>();
-        String result = restTemplate.getForObject("http://hq.sinajs.cn/list=sh600155",String.class, param);
-        MonitorSharesPrice monitorSharesPrice = new MonitorSharesPrice("sh600155",15.3F,restTemplate,emailService);
-        SharesThreadPool.getInstance().sharesPool.submit(monitorSharesPrice);
-        return result+"\n";
-    }
-
-
 }

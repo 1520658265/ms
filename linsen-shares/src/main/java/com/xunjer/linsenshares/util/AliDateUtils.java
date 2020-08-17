@@ -1,5 +1,7 @@
 package com.xunjer.linsenshares.util;
 
+import cn.hutool.core.util.EscapeUtil;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,8 +25,9 @@ public class AliDateUtils {
      * @return
      */
     public static long getTimestamp(String s) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String resultDateString = simpleDateFormat.format(new Date())+" "+s;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String curDate = simpleDateFormat.format(new Date());
+        String resultDateString = curDate.substring(0,curDate.indexOf(" ")+1) + s;
         return simpleDateFormat.parse(resultDateString).getTime();
     }
 }

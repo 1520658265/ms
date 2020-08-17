@@ -4,12 +4,14 @@ package com.xunjer.linsenshares.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.CharsetUtil;
+import com.xunjer.linsenshares.common.email.EmailService;
 import com.xunjer.linsenshares.entity.Shares;
 import com.xunjer.linsenshares.entity.ds.SingleDealResult;
 import com.xunjer.linsenshares.entity.dto.SharesDealDto;
 import com.xunjer.linsenshares.repository.SharesRepository;
 import com.xunjer.linsenshares.service.deal.SharesThreadPool;
 import com.xunjer.linsenshares.service.deal.simple.SingleDeal;
+import com.xunjer.linsenshares.service.task.MonitorSharesPrice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,13 +19,11 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -43,7 +43,11 @@ import static com.xunjer.linsenshares.util.SharesUtils.*;
 public class DemoController {
 
     @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
     private SharesRepository sharesRepository;
+    @Autowired
+    private EmailService emailService;
 
     @Value("${publicKey}")
     private String public_key;
@@ -85,23 +89,6 @@ public class DemoController {
         return result;
     }
 
-    @GetMapping("demo")
-    public String a() throws ParseException {
-        List<Shares> all = sharesRepository.findAll();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");
-        all = all.stream().filter(s->!simpleDateFormat.format(s.getCurDate()).equals("2020-08-11")).collect(Collectors.toList());
-        System.out.println(all.size());
-        all.forEach(s->{
-            System.out.println("正在处理"+s.getSharesName());
-            String rate = s.getScopeRate();
-            String qu = s.getScopeQuota();
-            s.setScopeRate(qu);
-            s.setScopeQuota(rate);
-            sharesRepository.save(s);
-        });
-        return all.size()+"";
-    }
-
     @GetMapping("b")
     public String b() throws ExecutionException, InterruptedException {
         List<Shares> all = sharesRepository.findAll();
@@ -122,6 +109,15 @@ public class DemoController {
         }
         strBuilder.append("    成功数量："+success+"||总数量"+codeMap.size());
         return strBuilder.toString();
+    }
+
+    @GetMapping("getCur")
+    public Object getCurData(String sharesCode) throws ParseException {
+        Map<String ,String> param  = new HashMap<>();
+        String result = restTemplate.getForObject("http://hq.sinajs.cn/list=sh600155",String.class, param);
+        MonitorSharesPrice monitorSharesPrice = new MonitorSharesPrice("sh600155",15.3F,restTemplate,emailService);
+        SharesThreadPool.getInstance().sharesPool.submit(monitorSharesPrice);
+        return result+"\n";
     }
 
 

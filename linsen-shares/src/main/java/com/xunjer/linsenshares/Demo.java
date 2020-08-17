@@ -9,6 +9,6 @@ package com.xunjer.linsenshares;
 public class Demo {
 
     public static void main(String[] args) {
-        System.out.println((int) Math.ceil((double) 7 / 5));
+
     }
 }

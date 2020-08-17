@@ -29,5 +29,3 @@ spring:
             - Path=/shares/**
 
 
-publicKey: D:\\public_key.txt
-

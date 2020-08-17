@@ -2,9 +2,9 @@ package com.xunjer.ms.workplanservice.controller;
 
 import com.xunjer.linsencommon.model.PageData;
 import com.xunjer.linsencommon.model.ResultModel;
-import com.xunjer.ms.workplanservice.entity.PlanWeek;
-import com.xunjer.ms.workplanservice.entity.dto.PlanWeekDTO;
-import com.xunjer.ms.workplanservice.service.IWeekPlanService;
+import com.xunjer.ms.workplanservice.entity.PlanMaster;
+import com.xunjer.ms.workplanservice.entity.dto.PlanMasterDTO;
+import com.xunjer.ms.workplanservice.service.IPlanMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,35 +25,35 @@ import java.util.List;
 public class PlanController {
 
     @Autowired
-    private IWeekPlanService weekPlanService;
+    private IPlanMasterService weekPlanService;
 
     /**
      * 周计划接口
      *  1、新增、修改、删除(逻辑删除)
-     * @param planWeek
+     * @param planMaster
      * @param pageable
      * @return
      */
 
     @PostMapping("/get")
-    public ResultModel<PageData<List<PlanWeekDTO>>> getList(PlanWeek planWeek, Pageable pageable){
-        return weekPlanService.findWeekPlanByCondition(planWeek,pageable);
+    public ResultModel<PageData<List<PlanMasterDTO>>> getList(PlanMaster planMaster, Pageable pageable){
+        return weekPlanService.findWeekPlanByCondition(planMaster,pageable);
     }
 
     @PostMapping("add")
-    public ResultModel<Boolean> addPlanWeek(PlanWeek planWeek){
-        return weekPlanService.add(planWeek);
+    public ResultModel<Boolean> addPlanWeek(PlanMaster planMaster){
+        return weekPlanService.add(planMaster);
     }
 
     @PostMapping("update")
-    public ResultModel<Boolean> updatePlanWeek(PlanWeek planWeek){
-        return weekPlanService.update(planWeek);
+    public ResultModel<Boolean> updatePlanWeek(PlanMaster planMaster){
+        return weekPlanService.update(planMaster);
     }
 
 
     @GetMapping("/getDetail")
-    public ResultModel<PageData<List<PlanWeekDTO>>> getListDetail(PlanWeek planWeek, Pageable pageable){
-        return weekPlanService.findWeekPlanByCondition(planWeek,pageable);
+    public ResultModel<PageData<List<PlanMasterDTO>>> getListDetail(PlanMaster planMaster, Pageable pageable){
+        return weekPlanService.findWeekPlanByCondition(planMaster,pageable);
     }
 
     @GetMapping("/delete")

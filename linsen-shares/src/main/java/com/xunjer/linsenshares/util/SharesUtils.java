@@ -53,4 +53,18 @@ public class SharesUtils {
         float finalMinLmr = minLmr;
         return shares.stream().filter(shares1 -> checkString(shares1.getLmr()) && Float.parseFloat(shares1.getLmr())> finalMinLmr).collect(Collectors.toList());
     }
+
+
+    public static List<Shares> dealCurData(String code,String string){
+        List<Shares> list = new ArrayList<>();
+        String[] arrays = string.split(";");
+        for(String s :arrays){
+            Shares shares = new Shares();
+            String content = string.substring(string.indexOf("\""), string.lastIndexOf("\""));
+            String[] array = content.split(",",-1);
+            shares.setSharesCode(code);
+            shares.setSharesName(array[0]);
+        }
+        return list;
+    }
 }

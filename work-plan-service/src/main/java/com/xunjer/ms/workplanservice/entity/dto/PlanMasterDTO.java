@@ -1,7 +1,7 @@
 package com.xunjer.ms.workplanservice.entity.dto;
 
 import com.xunjer.ms.workplanservice.entity.PlanDay;
-import com.xunjer.ms.workplanservice.entity.PlanWeek;
+import com.xunjer.ms.workplanservice.entity.PlanMaster;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlanWeekDTO extends PlanWeek {
+public class PlanMasterDTO extends PlanMaster {
 
     private List<PlanDay> list = new ArrayList<>();
 }

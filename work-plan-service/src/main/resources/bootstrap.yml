@@ -1,0 +1,15 @@
+server:
+  port: 8114
+spring:
+  application:
+    name: work-plan-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      password: nacos
+      username: nacos
+      config:
+        server-addr: 127.0.0.1:8848
+        refresh-enabled: true
+        file-extension: yaml

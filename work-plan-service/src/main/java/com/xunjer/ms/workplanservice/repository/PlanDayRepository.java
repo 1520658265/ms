@@ -12,7 +12,7 @@ import java.util.List;
  * @Description:
  * @date 2020/7/818:12
  */
-public interface DayPlanRepository extends JpaRepository<PlanDay, Integer>, CrudRepository<PlanDay,Integer> {
+public interface PlanDayRepository extends JpaRepository<PlanDay, Integer>, CrudRepository<PlanDay,Integer> {
 
     void deleteByWeekId(Integer weekId);
 

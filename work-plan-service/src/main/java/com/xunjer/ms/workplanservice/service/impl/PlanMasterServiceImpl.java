@@ -1,5 +1,6 @@
 package com.xunjer.ms.workplanservice.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.github.wenhao.jpa.Specifications;
 import com.xunjer.linsencommon.dictionary.Dictionary;
@@ -9,6 +10,8 @@ import com.xunjer.linsencommon.utils.StringArrayTransformUtil;
 import com.xunjer.linsencommon.utils.StringSplitUtils;
 import com.xunjer.ms.workplanservice.entity.PlanMaster;
 import com.xunjer.ms.workplanservice.entity.dto.PlanMasterDTO;
+import com.xunjer.ms.workplanservice.entity.dto.PlanMonWeekDTO;
+import com.xunjer.ms.workplanservice.entity.dto.PlanYearDTO;
 import com.xunjer.ms.workplanservice.repository.PlanDayRepository;
 import com.xunjer.ms.workplanservice.repository.PlayMasterRepository;
 import com.xunjer.ms.workplanservice.service.IPlanMasterService;
@@ -79,6 +82,29 @@ public class PlanMasterServiceImpl implements IPlanMasterService {
         });
         PageData<List<PlanMasterDTO>> result = new PageData<>();
         result.setData(dtoList);
+        return new ResultModel<>(result);
+    }
+
+    @Override
+    public ResultModel<PlanYearDTO> getYearPlan(Integer year) {
+        PlanYearDTO result = new PlanYearDTO();
+        List<PlanMaster> yearPlanList = playMasterRepository.findByPlanDate(year);
+        if(yearPlanList.size()>0){
+            PlanMaster yearPlan = yearPlanList.get(0);
+            BeanUtil.copyProperties(yearPlan, result, false);
+            List<PlanMonWeekDTO> list = new ArrayList<>(12);
+            List<PlanMaster> monthList = playMasterRepository.findByParentId(yearPlan.getMasterId());
+            //TODO 这里需要吧SQL次数改成1
+            monthList.forEach(s->{
+                PlanMonWeekDTO dto = new PlanMonWeekDTO();
+                BeanUtil.copyProperties(s,dto,false);
+                List<PlanMaster> planWeek = playMasterRepository.findByParentId(s.getMasterId());
+                dto.setWeekPlan(planWeek);
+                list.add(dto);
+            });
+            result.setList(list);
+        }
+
         return new ResultModel<>(result);
     }
 

@@ -35,4 +35,7 @@ public interface PlayMasterRepository extends JpaRepository<PlanMaster,Integer> 
     @Query(value = "update week_plan set int_del_flag = :intDelFlag where week_id in (:ids)" ,nativeQuery = true)
     Integer batchLogicDelete(@Param("intDelFlag")Integer intDelFlag,@Param("ids")int[] ids);
 
+    List<PlanMaster> findByPlanDate(Integer year);
+
+    List<PlanMaster> findByParentId(Integer masterId);
 }

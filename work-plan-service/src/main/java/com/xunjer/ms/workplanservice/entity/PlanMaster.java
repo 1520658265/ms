@@ -32,7 +32,9 @@ public class PlanMaster {
     /**
      * 对应上面的时间
      */
-    private String masterDate;
+    private Integer parentId;
+
+    private String planDate;
 
     private String planTitle;
 
@@ -45,8 +47,6 @@ public class PlanMaster {
     private Date planCreateDate;
 
     private String planDesc;
-
-    private String planAppend;
 
     private Integer planScore = 0;
     /**

@@ -4,6 +4,7 @@ import com.xunjer.linsencommon.model.PageData;
 import com.xunjer.linsencommon.model.ResultModel;
 import com.xunjer.ms.workplanservice.entity.PlanMaster;
 import com.xunjer.ms.workplanservice.entity.dto.PlanMasterDTO;
+import com.xunjer.ms.workplanservice.entity.dto.PlanYearDTO;
 import com.xunjer.ms.workplanservice.service.IPlanMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -35,28 +36,27 @@ public class PlanController {
      * @return
      */
 
-    @PostMapping("/get")
-    public ResultModel<PageData<List<PlanMasterDTO>>> getList(PlanMaster planMaster, Pageable pageable){
-        return weekPlanService.findWeekPlanByCondition(planMaster,pageable);
+    /**
+     * 根据年份查询月份数据
+     * @param year
+     * @return
+     */
+    @PostMapping("/getYearPlan")
+    public ResultModel<PlanYearDTO> getYearPlan(Integer year){
+        return weekPlanService.getYearPlan(year);
     }
 
-    @PostMapping("add")
+    @PostMapping("addPlan")
     public ResultModel<Boolean> addPlanWeek(PlanMaster planMaster){
         return weekPlanService.add(planMaster);
     }
 
-    @PostMapping("update")
+    @PostMapping("updatePlan")
     public ResultModel<Boolean> updatePlanWeek(PlanMaster planMaster){
         return weekPlanService.update(planMaster);
     }
 
-
-    @GetMapping("/getDetail")
-    public ResultModel<PageData<List<PlanMasterDTO>>> getListDetail(PlanMaster planMaster, Pageable pageable){
-        return weekPlanService.findWeekPlanByCondition(planMaster,pageable);
-    }
-
-    @GetMapping("/delete")
+    @GetMapping("/deletePlan")
     public ResultModel<Boolean> deletePlans(String weekIds){
         return weekPlanService.delete(weekIds);
     }

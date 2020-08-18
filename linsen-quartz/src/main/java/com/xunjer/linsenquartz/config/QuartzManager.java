@@ -2,6 +2,8 @@ package com.xunjer.linsenquartz.config;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.xunjer.linsenquartz.entity.ScheduleJob;
+import com.xunjer.linsenquartz.repository.JobRepository;
+import com.xunjer.linsenquartz.utils.JobUtils;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class QuartzManager {
 
     @Autowired
     private Scheduler scheduler;
+    @Autowired
+    private JobRepository jobRepository;
 
     /**
      * 添加任务
@@ -31,6 +35,7 @@ public class QuartzManager {
      */
     public void addJob(ScheduleJob task) {
         try {
+            jobRepository.save(task);
             // 创建jobDetail实例，绑定Job实现类
             // 指明job的名称，所在组的名称，以及绑定job类
             Class<? extends Job> jobClass = (Class<? extends Job>) (Class.forName(task.getBeanClass()).newInstance()
@@ -51,6 +56,7 @@ public class QuartzManager {
             if (!scheduler.isShutdown()) {
                 scheduler.start();
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,29 +73,8 @@ public class QuartzManager {
         Set<JobKey> jobKeys = scheduler.getJobKeys(matcher);
         List<ScheduleJob> jobList = new ArrayList<>();
         for (JobKey jobKey : jobKeys) {
-            List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
-            for (Trigger trigger : triggers) {
-                ScheduleJob job = new ScheduleJob();
-                job.setJobName(jobKey.getName());
-                job.setJobGroup(jobKey.getGroup());
-                job.setDescription("触发器:" + trigger.getKey());
-                Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
-                /**
-                 * NONE,
-                 *         NORMAL,
-                 *         PAUSED,
-                 *         COMPLETE,
-                 *         ERROR,
-                 *         BLOCKED;
-                 */
-//                job.setJobStatus(triggerState.name());
-                if (trigger instanceof CronTrigger) {
-                    CronTrigger cronTrigger = (CronTrigger) trigger;
-                    String cronExpression = cronTrigger.getCronExpression();
-                    job.setCorn(cronExpression);
-                }
-                jobList.add(job);
-            }
+            JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+            jobList.add(JobUtils.transform(jobDetail.getJobDataMap()));
         }
         return jobList;
     }
@@ -102,23 +87,10 @@ public class QuartzManager {
      */
     public List<ScheduleJob> getRunningJob() throws SchedulerException {
         List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
+        System.out.println(executingJobs.size());
         List<ScheduleJob> jobList = new ArrayList<>(executingJobs.size());
         for (JobExecutionContext executingJob : executingJobs) {
-            ScheduleJob job = new ScheduleJob();
-            JobDetail jobDetail = executingJob.getJobDetail();
-            JobKey jobKey = jobDetail.getKey();
-            Trigger trigger = executingJob.getTrigger();
-            job.setJobName(jobKey.getName());
-            job.setJobGroup(jobKey.getGroup());
-            job.setDescription("触发器:" + trigger.getKey());
-            Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
-//            job.setJobStatus(triggerState.name());
-            if (trigger instanceof CronTrigger) {
-                CronTrigger cronTrigger = (CronTrigger) trigger;
-                String cronExpression = cronTrigger.getCronExpression();
-                job.setCorn(cronExpression);
-            }
-            jobList.add(job);
+            jobList.add(JobUtils.transform(executingJob.getMergedJobDataMap()));
         }
         return jobList;
     }

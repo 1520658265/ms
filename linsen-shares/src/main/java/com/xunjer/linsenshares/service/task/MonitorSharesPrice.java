@@ -52,7 +52,7 @@ public class MonitorSharesPrice implements Runnable {
 
     private void checkTime(){
         flag =  System.currentTimeMillis()<finishTime;
-        if(flag){
+        if(!flag){
             String endString = sharesMonitor.getSharesCode()+"任务已结束，结果正常结束；结束价格:"+data[3]+"其实价格"+data[1];
             emailService.sendSimpleMail("1520658265@qq.com","监控结果",endString);
             sharesMonitor.setSharesName(data[0]);

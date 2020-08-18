@@ -26,13 +26,13 @@ public class SharesMonitor {
 
     private String sharesCode;
 
-    private String sharesName;
+    private String sharesName="";
 
     private BigDecimal monitorPrice;
 
     private Date createDate;
 
-    private String result;
+    private String result="";
 
     private Integer monitorTime = 5;
 }

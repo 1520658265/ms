@@ -1,7 +1,6 @@
-package com.xunjer.linsenshares.common.email;
+package com.xunjer.linsenquartz.email;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Value("${spring.mail.username}")
-    private String from;
+    private String from = "临森";
 
     @Autowired
     private JavaMailSender mailSender;
@@ -33,7 +31,7 @@ public class EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(content);
-        message.setFrom(from);
+        message.setFrom(this.from);
         mailSender.send(message);
     }
 }

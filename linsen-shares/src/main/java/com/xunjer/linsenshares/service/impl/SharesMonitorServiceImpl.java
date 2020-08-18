@@ -43,7 +43,7 @@ public class SharesMonitorServiceImpl implements ISharesMonitorService {
     public ResultModel<Boolean> batchDelete(String monitorIds) {
         String[] arrayString = StringSplitUtils.splitByComma(monitorIds);
         int[] intArrays = StringArrayTransformUtil.transformIntArray(arrayString);
-        sharesMonitorRepository.deleteByIdIn(intArrays);
+        sharesMonitorRepository.deleteByMonitorIdIn(intArrays);
         return new ResultModel<>(true);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public class SharesController {
 
     @GetMapping("getCur")
     public Object getCurData(SharesMonitor sharesMonitor) throws ParseException {
+        sharesMonitor.setCreateDate(new Date());
         iSharesMonitorService.addSharesMonitor(sharesMonitor);
         MonitorSharesPrice monitorSharesPrice = new MonitorSharesPrice(sharesMonitor,restTemplate,emailService,iSharesMonitorService);
         SharesThreadPool.getInstance().sharesPool.execute(monitorSharesPrice);

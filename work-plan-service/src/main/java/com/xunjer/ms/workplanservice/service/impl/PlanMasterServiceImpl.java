@@ -63,7 +63,7 @@ public class PlanMasterServiceImpl implements IPlanMasterService {
 
 
     @Override
-    public ResultModel<PageData<List<PlanMasterDTO>>> findWeekPlanByCondition(PlanMaster planMaster, Pageable pageable) {
+    public ResultModel<PageData<List<PlanMasterDTO>>> findWeekPlanByCondition(PlanMaster planMaster, Pageable d) {
         Specification<PlanMaster> specification =  Specifications.<PlanMaster> and()
                 .like(StringUtils.isNotEmpty(planMaster.getPlanTitle()),"weekTitle",  planMaster.getPlanTitle()+"%")
                 .between(StringUtils.isNotEmpty(DateUtil.formatDateTime(planMaster.getPlanStart())),"weekCreateDate", planMaster.getPlanStart(), planMaster.getPlanEnd())

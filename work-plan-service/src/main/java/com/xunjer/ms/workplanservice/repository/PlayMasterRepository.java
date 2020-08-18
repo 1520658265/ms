@@ -20,12 +20,19 @@ public interface PlayMasterRepository extends JpaRepository<PlanMaster,Integer> 
 
     /**
      * 自定义简单Sql
+     * @param weekId
      * @return
      */
     @Query(value = "select * from week_plan where week_Id=:weekId", nativeQuery = true)
     List<PlanMaster> findList(@Param("weekId")Integer weekId);
 
+    /**
+     * 批量删除
+     * @param intDelFlag
+     * @param ids
+     * @return
+     */
     @Query(value = "update week_plan set int_del_flag = :intDelFlag where week_id in (:ids)" ,nativeQuery = true)
-    Integer batchLogicDelete(Integer intDelFlag,int[] ids);
+    Integer batchLogicDelete(@Param("intDelFlag")Integer intDelFlag,@Param("ids")int[] ids);
 
 }

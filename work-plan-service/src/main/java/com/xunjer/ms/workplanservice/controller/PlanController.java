@@ -42,7 +42,7 @@ public class PlanController {
      * @return
      */
     @PostMapping("/getYearPlan")
-    public ResultModel<PlanYearDTO> getYearPlan(Integer year){
+    public ResultModel<PlanYearDTO> getYearPlan(String year){
         return weekPlanService.getYearPlan(year);
     }
 

@@ -17,25 +17,16 @@ import java.util.List;
  */
 @Repository
 public interface PlayMasterRepository extends JpaRepository<PlanMaster,Integer> , JpaSpecificationExecutor {
-
-    /**
-     * 自定义简单Sql
-     * @param weekId
-     * @return
-     */
-    @Query(value = "select * from week_plan where week_Id=:weekId", nativeQuery = true)
-    List<PlanMaster> findList(@Param("weekId")Integer weekId);
-
     /**
      * 批量删除
      * @param intDelFlag
      * @param ids
      * @return
      */
-    @Query(value = "update week_plan set int_del_flag = :intDelFlag where week_id in (:ids)" ,nativeQuery = true)
+    @Query(value = "update week_plan set plan_delete = :intDelFlag where master_id in (:ids)" ,nativeQuery = true)
     Integer batchLogicDelete(@Param("intDelFlag")Integer intDelFlag,@Param("ids")int[] ids);
 
-    List<PlanMaster> findByPlanDate(Integer year);
+    List<PlanMaster> findByPlanDate(String planDate);
 
     List<PlanMaster> findByParentId(Integer masterId);
 }

@@ -86,7 +86,7 @@ public class PlanMasterServiceImpl implements IPlanMasterService {
     }
 
     @Override
-    public ResultModel<PlanYearDTO> getYearPlan(Integer year) {
+    public ResultModel<PlanYearDTO> getYearPlan(String year) {
         PlanYearDTO result = new PlanYearDTO();
         List<PlanMaster> yearPlanList = playMasterRepository.findByPlanDate(year);
         if(yearPlanList.size()>0){
@@ -104,7 +104,6 @@ public class PlanMasterServiceImpl implements IPlanMasterService {
             });
             result.setList(list);
         }
-
         return new ResultModel<>(result);
     }
 

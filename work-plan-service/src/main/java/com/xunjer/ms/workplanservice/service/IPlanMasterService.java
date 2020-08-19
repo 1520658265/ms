@@ -25,5 +25,5 @@ public interface IPlanMasterService {
 
     ResultModel<PageData<List<PlanMasterDTO>>> findWeekPlanByCondition(PlanMaster planMaster, Pageable pageable);
 
-    ResultModel<PlanYearDTO> getYearPlan(Integer year);
+    ResultModel<PlanYearDTO> getYearPlan(String year);
 }

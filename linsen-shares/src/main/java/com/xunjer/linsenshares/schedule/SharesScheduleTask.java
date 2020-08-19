@@ -5,9 +5,13 @@ import com.xunjer.linsenshares.common.constant.SharesConstant;
 import com.xunjer.linsenshares.common.email.EmailService;
 import com.xunjer.linsenshares.entity.Shares;
 import com.xunjer.linsenshares.repository.SharesRepository;
+import com.xunjer.linsenshares.service.deal.SharesThreadPool;
+import com.xunjer.linsenshares.service.task.GetSharesCurRate;
+import com.xunjer.linsenshares.service.task.SharesSimpleTrain;
 import com.xunjer.linsenshares.util.AgentUtils;
 import com.xunjer.linsenshares.util.AliDateUtils;
 import com.xunjer.linsenshares.util.IpUtils;
+import com.xunjer.linsenshares.util.SharesUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 /**
  * @author yuansheng
@@ -55,12 +63,6 @@ public class SharesScheduleTask {
         List<String> errorCode = new ArrayList<>();
         for(String s : array){
             String[] l = s.split(",");
-            System.out.println(l.length);
-            if(l.length<17){
-                error++;
-                errorCode.add(l[1]);
-                continue;
-            }
             Shares shares = new Shares();
             shares.setSharesCode(l[1]);
             shares.setSharesName(l[2]);
@@ -83,5 +85,51 @@ public class SharesScheduleTask {
         }
         String emailContent = "数据采集完成"+(array.length-error)+";失败数据："+error;
         emailService.sendSimpleMail("2101849546@qq.com","数据采集",emailContent);
+    }
+
+    /**
+     * 每天晚上八点进行简单的数据统计
+     */
+    @Scheduled(cron = "0 0 20 * * SUN-THU")
+    public void simpleDeal(){
+        System.out.println("kaishi ");
+        List<Shares> all = sharesRepository.findAll();
+        all = all.stream().filter(s-> SharesUtils.checkString(s.getScopeQuota()) && Float.parseFloat(s.getScopeQuota())>0).collect(Collectors.toList());
+        List<Date> dayList = all.stream().map(Shares::getCurDate).distinct().collect(Collectors.toList());
+        List<Future<GetSharesCurRate.Result>> futures = new ArrayList<>();
+        int max = dayList.size()-2;
+        for(int i=0;i<max;i++){
+            List<Date> cur = dayList.subList(0,i+3);
+            List<Shares> l = all.stream().filter(s->cur.contains(s.getCurDate())).collect(Collectors.toList());
+            futures.add(SharesThreadPool.getInstance().sharesPool.submit(new GetSharesCurRate(i+3,l)));
+
+        }
+        StringBuilder sb = new StringBuilder("统计结果："+"\n");
+        futures.forEach(f->{
+            try {
+                GetSharesCurRate.Result result = f.get();
+                sb.append("     "+result.getDays()+"天相同的处理结果："+"\n        "+result.getList().stream().collect(Collectors.joining("-"))+"\n");
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+        });
+        emailService.sendSimpleMail("1520658265@qq.com","处理结果",sb.toString());
+    }
+
+    @Scheduled(cron = "0 10 20 * * SUN-THU")
+    public void simpleTrain(){
+        List<Shares> all = sharesRepository.findAll();
+        all = all.stream().filter(s-> SharesUtils.checkString(s.getScopeQuota()) && Float.parseFloat(s.getScopeQuota())>0).collect(Collectors.toList());
+        List<Date> dayList = all.stream().map(Shares::getCurDate).distinct().collect(Collectors.toList());
+        Map<Date,List<Shares>> map = all.stream()
+                .collect(Collectors.groupingBy(Shares::getCurDate));
+        int max = dayList.size()-2;
+        for(int i=0;i<max;i++){
+            SharesThreadPool.getInstance().sharesPool.execute(new SharesSimpleTrain(i+2,dayList,map));
+        }
     }
 }

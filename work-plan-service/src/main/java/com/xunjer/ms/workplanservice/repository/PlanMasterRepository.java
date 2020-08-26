@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2020/7/718:26
  */
 @Repository
-public interface PlayMasterRepository extends JpaRepository<PlanMaster,Integer> , JpaSpecificationExecutor {
+public interface PlanMasterRepository extends JpaRepository<PlanMaster,Integer> , JpaSpecificationExecutor {
     /**
      * 批量删除
      * @param intDelFlag
@@ -29,4 +29,6 @@ public interface PlayMasterRepository extends JpaRepository<PlanMaster,Integer> 
     List<PlanMaster> findByPlanDate(String planDate);
 
     List<PlanMaster> findByParentId(Integer masterId);
+
+    void deleteByParentId(Integer yearId);
 }

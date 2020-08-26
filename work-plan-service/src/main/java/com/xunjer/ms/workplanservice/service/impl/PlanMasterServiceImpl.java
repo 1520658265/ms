@@ -13,7 +13,7 @@ import com.xunjer.ms.workplanservice.entity.dto.PlanMasterDTO;
 import com.xunjer.ms.workplanservice.entity.dto.PlanMonWeekDTO;
 import com.xunjer.ms.workplanservice.entity.dto.PlanYearDTO;
 import com.xunjer.ms.workplanservice.repository.PlanDayRepository;
-import com.xunjer.ms.workplanservice.repository.PlayMasterRepository;
+import com.xunjer.ms.workplanservice.repository.PlanMasterRepository;
 import com.xunjer.ms.workplanservice.service.IPlanMasterService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -40,27 +40,27 @@ import java.util.List;
 public class PlanMasterServiceImpl implements IPlanMasterService {
 
     @Autowired
-    private PlayMasterRepository playMasterRepository;
+    private PlanMasterRepository planMasterRepository;
 
     @Autowired
     private PlanDayRepository planDayRepository;
 
     @Override
     public ResultModel<Boolean> add(PlanMaster planMaster) {
-        PlanMaster result = playMasterRepository.save(planMaster);
+        PlanMaster result = planMasterRepository.save(planMaster);
         return new ResultModel<>(result.getMasterId()!=null);
     }
 
     @Override
     public ResultModel<Boolean> update(PlanMaster planMaster) {
-        playMasterRepository.save(planMaster);
+        planMasterRepository.save(planMaster);
         return new ResultModel<>(true);
     }
 
     @Override
     public ResultModel<Boolean> delete(String weekIds) {
         int[] ids = StringArrayTransformUtil.transformIntArray(StringSplitUtils.splitByComma(weekIds));
-        playMasterRepository.batchLogicDelete(Dictionary.DeleteFlag.Delete.key(),ids);
+        planMasterRepository.batchLogicDelete(Dictionary.DeleteFlag.Delete.key(),ids);
         return new ResultModel<>(true);
     }
 
@@ -71,7 +71,7 @@ public class PlanMasterServiceImpl implements IPlanMasterService {
                 .like(StringUtils.isNotEmpty(planMaster.getPlanTitle()),"weekTitle",  planMaster.getPlanTitle()+"%")
                 .between(StringUtils.isNotEmpty(DateUtil.formatDateTime(planMaster.getPlanStart())),"weekCreateDate", planMaster.getPlanStart(), planMaster.getPlanEnd())
                 .build();
-        Page<PlanMaster> page = playMasterRepository.findAll(specification, PageRequest.of(0, 15,Sort.by(Sort.DEFAULT_DIRECTION,"weekCreateDate")));
+        Page<PlanMaster> page = planMasterRepository.findAll(specification, PageRequest.of(0, 15,Sort.by(Sort.DEFAULT_DIRECTION,"weekCreateDate")));
         List<PlanMaster> list = page.getContent();
         List<PlanMasterDTO> dtoList = new ArrayList<>();
         list.forEach(s->{
@@ -88,17 +88,17 @@ public class PlanMasterServiceImpl implements IPlanMasterService {
     @Override
     public ResultModel<PlanYearDTO> getYearPlan(String year) {
         PlanYearDTO result = new PlanYearDTO();
-        List<PlanMaster> yearPlanList = playMasterRepository.findByPlanDate(year);
+        List<PlanMaster> yearPlanList = planMasterRepository.findByPlanDate(year);
         if(yearPlanList.size()>0){
             PlanMaster yearPlan = yearPlanList.get(0);
             BeanUtil.copyProperties(yearPlan, result, false);
             List<PlanMonWeekDTO> list = new ArrayList<>(12);
-            List<PlanMaster> monthList = playMasterRepository.findByParentId(yearPlan.getMasterId());
+            List<PlanMaster> monthList = planMasterRepository.findByParentId(yearPlan.getMasterId());
             //TODO 这里需要吧SQL次数改成1
             monthList.forEach(s->{
                 PlanMonWeekDTO dto = new PlanMonWeekDTO();
                 BeanUtil.copyProperties(s,dto,false);
-                List<PlanMaster> planWeek = playMasterRepository.findByParentId(s.getMasterId());
+                List<PlanMaster> planWeek = planMasterRepository.findByParentId(s.getMasterId());
                 dto.setWeekPlan(planWeek);
                 list.add(dto);
             });

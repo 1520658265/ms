@@ -1,7 +1,7 @@
 package com.xunjer.ms.workplanservice;
 
 import com.xunjer.linsencommon.utils.RedisUtils;
-import com.xunjer.ms.workplanservice.repository.PlayMasterRepository;
+import com.xunjer.ms.workplanservice.repository.PlanMasterRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class WorkPlanServiceApplicationTests {
 
     @Autowired
-    private PlayMasterRepository playMasterRepository;
+    private PlanMasterRepository planMasterRepository;
 
     @Test
     void contextLoads() {

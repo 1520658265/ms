@@ -28,7 +28,7 @@ public class SharesUtils {
             return Collections.EMPTY_LIST;
         }else {
             List<SharesDealDto> same = new ArrayList<>();
-            List<Shares> first = list.get(0);
+            List<Shares> first = list.get(list.size()-1);
             first.forEach(s->{
                 boolean num = true;
                 for(int i=1;i<list.size();i++){

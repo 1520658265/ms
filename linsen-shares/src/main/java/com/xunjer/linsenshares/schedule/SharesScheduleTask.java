@@ -7,7 +7,7 @@ import com.xunjer.linsenshares.entity.Shares;
 import com.xunjer.linsenshares.repository.SharesRepository;
 import com.xunjer.linsenshares.service.deal.SharesThreadPool;
 import com.xunjer.linsenshares.service.task.GetSharesCurRate;
-import com.xunjer.linsenshares.service.task.SharesSimpleTrain;
+import com.xunjer.linsenshares.service.task.SharesRisePrTask;
 import com.xunjer.linsenshares.util.AgentUtils;
 import com.xunjer.linsenshares.util.AliDateUtils;
 import com.xunjer.linsenshares.util.IpUtils;
@@ -129,7 +129,7 @@ public class SharesScheduleTask {
                 .collect(Collectors.groupingBy(Shares::getCurDate));
         int max = dayList.size()-2;
         for(int i=0;i<max;i++){
-            SharesThreadPool.getInstance().sharesPool.execute(new SharesSimpleTrain(i+2,dayList,map));
+            SharesThreadPool.getInstance().sharesPool.submit(new SharesRisePrTask(i+2,dayList,map));
         }
     }
 }

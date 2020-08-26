@@ -42,11 +42,11 @@ public class GetSharesCurRate implements Callable<GetSharesCurRate.Result> {
         map.forEach((k,v)->{
             mList.add(v);
         });
-        List<String>  resultList =  SharesUtils.getSameData(mList);
+//        List<String>  resultList =  SharesUtils.getSameData(mList);
 
         Result result = new Result();
-        result.setDays(days);
-        result.setList(resultList);
+//        result.setDays(days);
+//        result.setList(resultList);
         return result;
     }
 

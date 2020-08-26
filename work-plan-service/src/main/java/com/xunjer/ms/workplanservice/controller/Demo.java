@@ -18,26 +18,14 @@ import java.util.Collections;
 public class Demo {
 
     public static void main(String[] args) throws Exception {
-//        while (true){
-//            HttpUtil.createGet("http://hq.sinajs.cn/list=sh601456");
-//            String result = load("http://hq.sinajs.cn/list=sh601456","");
-//            String content = result.substring(result.indexOf("\""), result.lastIndexOf("\""));
-//            String[] array = StringSplitUtils.splitByComma(content);
-//            float start = Float.parseFloat(array[2]);
-//            float noww = Float.parseFloat(array[3]);
-//            float size = (noww-start)/start * 100;
-//            String extra = "";
-//            if(size<5.62){
-//                extra = "亏了"+(5.62-size)*start*3;
-//            }
-//            System.out.println("当前价格"+noww + "  幅度"+size + "%  "+extra);
-//            Thread.sleep(10000L);
-//        }
-        StringBuilder stringBuilder = new StringBuilder("\t哈哈哈哈");
-        System.out.println(stringBuilder.toString());
+        while (true){
+            load("http://hq.sinajs.cn/list=sh603696","");
+            load("http://hq.sinajs.cn/list=sh603697","");
+            Thread.sleep(30000L);
+        }
     }
 
-    public static String load(String url,String query) throws Exception
+    public static void load(String url,String query) throws Exception
     {
         URL restURL = new URL(url);
         /*
@@ -45,13 +33,14 @@ public class Demo {
          */
         HttpURLConnection conn = (HttpURLConnection) restURL.openConnection();
         //请求方式
-        conn.setRequestMethod("POST");
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Charsert", "UTF-8"); //设置请求编码
         //设置是否从httpUrlConnection读入，默认情况下是true; httpUrlConnection.setDoInput(true);
         conn.setDoOutput(true);
         //allowUserInteraction 如果为 true，则在允许用户交互（例如弹出一个验证对话框）的上下文中对此 URL 进行检查。
         conn.setAllowUserInteraction(false);
 
-        BufferedReader bReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        BufferedReader bReader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"));
 
         String line,resultStr="";
 
@@ -60,8 +49,18 @@ public class Demo {
             resultStr +=line;
         }
         bReader.close();
-
-        return resultStr;
+        resultStr = resultStr.substring(resultStr.indexOf("\""), resultStr.lastIndexOf("\""));
+        String[] array = StringSplitUtils.splitByComma(resultStr);
+        float start = Float.parseFloat(array[2]);
+        float noww = Float.parseFloat(array[3]);
+        float size = (noww-start)/start * 100;
+        String extra = "";
+        if(size<0){
+            extra = "亏了"+-size*start*6;
+        }else{
+            extra = "赚了"+size*start*3;
+        }
+        System.out.println(array[0]+"当前价格"+noww + "  幅度"+size + "%  "+extra);
 
     }
 }
